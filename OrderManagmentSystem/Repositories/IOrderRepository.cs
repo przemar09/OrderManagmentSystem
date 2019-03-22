@@ -9,7 +9,7 @@ namespace OrderManagmentSystem.Repositories
     {
         void Add(Order order);
         IEnumerable<Order> GetAll();
-        Order Get(string orderId);
+        Order Get(string clientId);
         void Remove(string orderId);
         void Update(Order order);
     }

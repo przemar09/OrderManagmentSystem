@@ -19,9 +19,7 @@ namespace OrderManagmentSystem.Repositories
             => _orders.SingleOrDefault(x => x.ClientId == clientId);
 
         public IEnumerable<Order> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+            => _orders;
 
         public void Remove(string orderId)
         {

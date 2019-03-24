@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace OrderManagmentSystem.Services
@@ -17,10 +18,16 @@ namespace OrderManagmentSystem.Services
             _orderRepository = orderRepository;
         }
 
-        public void ReadCsv()
+        // Structure of csv file should be constant
+        public void ReadCsv(string path)
         {
-            using (var reader = new StreamReader(@"C:\test.csv"))
+            using (var reader = new StreamReader(path))
             {
+                var firstLine = reader.ReadLine();
+                if(firstLine != "Client_Id,Request_id,Name,Quantity,Price")
+                {
+                    throw new Exception("Incorrect format of first line in .csv file");
+                }
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
@@ -30,6 +37,7 @@ namespace OrderManagmentSystem.Services
                     string name = values[2];
                     int quantity = int.Parse(values[3]);
                     double price = double.Parse(values[4], CultureInfo.InvariantCulture);
+
                     Order order = new Order(clientId, requestId, name, quantity, price);
                     _orderRepository.Add(order);
                 }
@@ -39,7 +47,7 @@ namespace OrderManagmentSystem.Services
         public void Raport()
         {
             var order = _orderRepository.Get("1");
-            Console.WriteLine($"ClientId: {order.ClientId}");
+            Console.WriteLine($"ClientId: {order.ClientId}, Name of product: {order.Name}");
         }
     }
 }

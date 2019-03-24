@@ -16,9 +16,14 @@ namespace OrderManagmentSystem
                 .AddSingleton<IOrderRepository, InMemoryOrderRepository>()
                 .BuildServiceProvider();
             Console.WriteLine("Hello World!");
-            CsvReader csvReader = new CsvReader(new InMemoryOrderRepository());
-            csvReader.ReadCsv();
+
+            IOrderRepository orderRepository = new InMemoryOrderRepository();
+            CsvReader csvReader = new CsvReader(orderRepository);
+            OrderRaports ordersRaports = new OrderRaports(orderRepository);
+            csvReader.ReadCsv(@"C:\test.csv");
             csvReader.Raport();
+            Console.WriteLine(orderRepository.Get("1").Name);
+            Console.WriteLine(ordersRaports.GetOrderAmount());
             Console.ReadKey();
         }
     }
